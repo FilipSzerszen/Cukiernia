@@ -1,0 +1,45 @@
+﻿@model Cukiernia.Aplication.Cukiernia.Commands.CreateSubProduct.CreateSubProductCommand
+
+<h4>Dodaj nowy składnik</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateSubProduct">
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label">Nazwa:</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 form-check">
+                <label asp-for="IsAllergenic" class="control-label">zawiera alergeny</label>
+                <input asp-for="IsAllergenic" class="form-check-input" />
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label">Cena za opakowanie:</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Package" class="control-label">Opakowanie:</label>
+                <input asp-for="Package" class="form-control" />
+                <span asp-validation-for="Package" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="MeasureId" class="control-label">Miara:</label>
+                <select asp-for="MeasureId" class="form-select">
+                    <option value="1">g</option>                         @* TO DO - Ulepszyć listę - pobieranie wartości z bazy*@
+                    <option value="2">ml</option>
+                    <option value="3">szt</option>
+                </select>
+            </div>
+            <input class="form-check-input" asp-for="IsDeletable" checked hidden />
+            <input class="form-check-input" asp-for="EncodedName" hidden />
+            <div class="form-group mb-3">
+                <input type="submit" value="Utwórz" class="btn btn-primary" />
+                <a asp-action="SubProductBase" class="btn btn-secondary">Wróć do listy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

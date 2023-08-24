@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@using Newtonsoft.Json;
+@{
+    var currentUrl = ViewContext.RouteData.Values["Action"]?.ToString();
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var area = ViewContext.RouteData.Values["Area"]?.ToString();
+}
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark @(controller == "Baking" && currentUrl == "Index" ? "active" : "")" asp-area="" asp-controller="Baking" asp-action="Index">Baza wypieków</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark @(controller == "Baking" && currentUrl == "Create" ? "active" : "")" asp-area="" asp-controller="Baking" asp-action="Create">Dodaj wypiek</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark @(controller == "SubProduct" && currentUrl == "SubProductBase" ? "active" : "")" asp-area="" asp-controller="SubProduct" asp-action="SubProductBase">Baza składników</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark @(area == "Identity" ? "active" : "")" asp-area="Identity" asp-page="/Account/Manage/Index">Ustawienia konta</a>
+            @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj @User.Identity?.Name!</a>*@
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Wyloguj</button>
+            </form>
+        </li>
+
+
+    }
+    else
+    {
+        @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+        </li>*@
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Login"><img src='~/Images/login.jpg' class="img-fluid"></a>
+        </li>
+    }
+</ul>

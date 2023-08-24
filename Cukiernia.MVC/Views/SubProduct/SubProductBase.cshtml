@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Cukiernia.Aplication.Cukiernia.SubProductDto>
+
+@{
+    ViewData["Title"] = "Baza składników";
+}
+
+<h2>Baza składników</h2>
+<br>
+
+<table class="table align-middle text-center table-sm">
+
+    <partial name="_CreateSubProduct.cshtml" model="new Cukiernia.Aplication.Cukiernia.Commands.CreateSubProduct.CreateSubProductCommand()" />
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-start fw-bold">
+                    @item.Name
+                </td>
+                <td>
+                    @if (@item.IsAllergenic)
+                    {
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="checkbox" unchecked disabled>
+                    }
+                </td>
+                <td>
+                    @item.Price zł
+                </td>
+                <td>
+                    @item.Package @item.Measure.Value
+                </td>
+                <td>
+                    <a class="btn btn-outline-secondary" asp-controller="SubProduct"
+                       asp-action="SubProductBaseEdit" asp-route-encodedName="@item.EncodedName" data-toggle="tooltip" data-placement="top"
+                       title="Zaktualizuj"><img src="~/Images/update.png" width="23" /></a>
+                    @if (@item.IsDeletable)
+                    {
+                        <a class="btn btn-outline-secondary" asp-controller="SubProduct"
+                           asp-action="DeleteSubProduct" asp-route-encodedName="@item.EncodedName" data-toggle="tooltip" data-placement="top"
+                           title="Usuń"><img src="~/Images/delete.png" width="23" /></a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="top"
+                           title="Najpierw usuń wszystkie ciasta z tym składnikiem"><img src="~/Images/unable_delete.png" width="23" /></a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,94 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.multiline {
+    white-space: pre-wrap;
+}
+
+.card-footer {
+    background-color: white;
+    border: none;
+}
+
+.box {
+    box-shadow: 0 0 8px rgba(0,0,0,.8);
+    transition: box-shadow .3s;
+}
+
+    .box:hover {
+        box-shadow: 0 0 8px rgba(0,0,0,.0);
+    }
+
+.card .btn {
+    position: relative;
+    z-index: 1;
+}
+
+.skladniki {
+    border-radius: 20px;
+}
+
+/*carousel*/
+.carousel {
+    position: relative;
+    border-radius: 11px;
+}
+
+#carousel-thumbs {
+    background: #000000;
+    padding: 0 50px;
+}
+
+    #carousel-thumbs img:hover {
+        opacity: 80%;
+    }
+
+    #carousel-thumbs img {
+        opacity: 100%;
+        border: 3px solid transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        width: auto;
+        object-fit: cover;
+        max-height: 200px;
+    }
+
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    outline: black;
+}
+
+
+
+/*.modal-content {
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+}*/
+
+#lightbox-container-image img {
+    width: auto;
+    max-height: 520px;
+}

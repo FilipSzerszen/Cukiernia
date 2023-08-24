@@ -1,0 +1,16 @@
+﻿@page
+@model Cukiernia.MVC.Views.Shared._UploadFilePartialModel
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<form method="post" enctype="multipart/form-data">
+    <span>Wybierz zdjęcia:</span>
+    <input type="file" name="postedFiles" multiple />
+    <input type="submit" value="Upload" asp-page-handler="Upload" />
+    @*<span style="color:green">@Html.Raw(Model.Message)</span>*@
+</form>
+
+         
+
+
+

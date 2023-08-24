@@ -1,0 +1,176 @@
+﻿@model Cukiernia.Aplication.Cukiernia.BakingDto
+
+@{
+    decimal endPrice = 0.0M;
+    decimal sum = 0.0M;
+    string active = "active";
+    int counter = 0;
+    var encodedName = (ViewContext.RouteData.Values["encodedName"]);
+    ViewData["Title"] = @Model.Name;
+
+}
+
+    <h2>@Model.Name</h2>
+    <div class="row col-md-9">
+        <div>
+
+            @if (Model.Images.Any())
+            {
+                <div id="wrap" class="container my-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Carousel -->
+                            <div id="carousel-thumbs" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @{
+                                        active = "active";
+                                    }
+                                    @for (int i = 0; i < (1 + Model.Images.Count / 4); i++)
+                                    {
+                                        if (Model.Images.Count <= counter) { break; }
+                                        counter += 4;
+                                        <div class="carousel-item @active" data-bs-slide-number="@i">
+                                            <div class="row mx-0">
+                                                @{
+                                                    active = "selected";
+                                                }
+                                                @for (int j = 0; j < 4; j++)
+                                                {
+                                                    if (j + i * 4 < Model.Images.Count)
+                                                    {
+                                                        <div id="carousel-selector-@(j+i*4)" class="thumb col-3 px-1 py-2 @active" data-bs-target="#carousel" data-bs-slide-to="@(j + i * 4)">
+                                                            @*<img src='~/Fotos/@Model.Images[j+i*4].Url.ToString()' class="img-fluid" alt="...">*@
+                                                            <a href='~/Fotos/@Model.Images[j+i*4].Url.ToString()' data-toggle="lightbox" data-gallery="gallery">
+                                                                <img src='~/Fotos/@Model.Images[j+i*4].Url.ToString()' class="img-fluid">
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        @*<div id="carousel-selector-@(j+i*4)" class="thumb col-3 px-1 py-2 @active" data-bs-target="#carousel" data-bs-slide-to="@(j + i * 4)">
+                                        </div>*@
+                                                    }
+                                                    active = "";
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                @if (Model.Images.Count > 4)
+                                {
+                                    <a class="carousel-control-prev" href="#carousel-thumbs" role="button" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carousel-thumbs" role="button" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <img class="rounded" src="~/Images/default.jpg" alt="@Model.Name" />
+            }
+        </div>
+        @if (Model.ProductQuantities.Any() && Model.IsEditable)
+        {
+            <div>
+                <hr />
+                <dl class="row text-center">
+                    <dt class="col-sm-4">
+                        Produkt
+                    </dt>
+                    <dt class="col-sm-2">
+                        Zawiera alergeny
+                    </dt>
+                    <dt class="col-sm-2">
+                        W wypieku
+                    </dt>
+                    <dt class="col-sm-2">
+                        Cena produktu
+                    </dt>
+                    <dt class="col-sm-2">
+                        Cena końcowa
+                    </dt>
+
+                    @foreach (var product in Model.ProductQuantities)
+                    {
+                        @if (product.SubProduct != null)
+                        {
+                            <dt class="col-sm-4 text-start">
+                                @product.SubProduct.Name
+                            </dt>
+                            <dd class="col-sm-2">
+                                @if (product.SubProduct.IsAllergenic)
+                                {
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled>
+                                }
+                                else
+                                {
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" unchecked disabled>
+                                }
+                            </dd>
+                            <dd class="col-sm-2">
+                                @product.SubProductQuantity @product.SubProduct.Measure.Value
+                            </dd>
+                            <dd class="col-sm-2">
+                                @product.SubProduct.Price zł / @product.SubProduct.Package @product.SubProduct.Measure.Value
+                            </dd>
+                            <dd class="col-sm-2">
+                                @{
+                                    if (product.SubProduct != null && product.SubProductQuantity.HasValue)
+                                    {
+                                        endPrice = (decimal)product.SubProductQuantity * (decimal)product.SubProduct.Price / (decimal)product.SubProduct.Package;
+                                        sum += endPrice;
+                                    }
+                                }
+                                @(endPrice.ToString("0.00")) zł
+                            </dd>
+                        }
+                    }
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-10 text-end">
+                        Koszt całkowity:
+                    </dt>
+                    <dt class="col-sm-2 text-center">
+                        @sum.ToString("0.00"+" zł")
+                    </dt>
+                </dl>
+            </div>
+        }
+
+        <div class="fw-bold">
+            <hr />
+            <p class="multiline">@Model.Description</p>
+            <p>@Model.Price zł</p>
+        </div>
+
+        <div>
+        
+        @if (Model.IsEditable)
+            {
+                <a class="btn btn-outline-secondary" asp-controller="Baking" asp-action="Edit"
+                   asp-route-encodedName="@Model.EncodedName">Edytuj</a>
+                <a class="btn btn-outline-secondary" asp-controller="Baking" asp-action="Delete"
+                   asp-route-encodedName="@Model.EncodedName">Usuń</a>
+            }
+        <a asp-action="Index" class="btn btn-secondary">Wróć do listy</a><a id="MailPartial"></a>
+        </div>
+    </div>
+
+    @section Scripts{
+    <script src="~/js/emoji.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
+
+    <script>
+        $('#MailPartial').load('@Url.Action("Send","Mail",new{encodedName = encodedName})');
+    </script>
+    }
+    
+

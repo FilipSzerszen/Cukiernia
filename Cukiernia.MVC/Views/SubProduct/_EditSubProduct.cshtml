@@ -1,0 +1,37 @@
+﻿@model Cukiernia.Aplication.Cukiernia.Commands.EditSubProduct.EditSubProductCommand
+
+
+<form asp-action="EditSubProduct" method="post">
+    <input asp-for="IsDeletable" hidden />
+    <input asp-for="Id" hidden />
+    <tr>
+        <th class=" col-sm-4">
+            <input class="form-control" type="text" asp-for="Name" />
+        </th>
+        <th class=" col-sm-1">
+            <input class="form-check-input" asp-for="IsAllergenic" />
+        </th>
+        <th class=" col-sm-2">
+            <div class="input-group">
+                <input class="text-end form-control" type="text" asp-for="Price">
+                <span class="input-group-text">zł</span>
+            </div>
+        </th>
+        <th class=" col-sm-2">
+            <div class="input-group">
+                <input class="form-control text-end w-50" type="text" asp-for="Package">
+                <select class="dropdown-toggle form-select" asp-for="MeasureId">
+                    <option selected value="1">g</option>                         @* TO DO - Ulepszyć listę - pobieranie wartości z bazy*@
+                    <option value="2">ml</option>
+                    <option value="3">szt</option>
+                </select>
+            </div>
+        </th>
+        <th class=" col-sm-2">
+            <button class="btn btn-outline-secondary" type="submit" asp-route-encodedName="@Model.EncodedName"><img src="~/Images/ok.png" width="23"></button>
+            <a class="btn btn-outline-secondary" asp-controller="SubProduct" asp-action="SubProductBase" data-toggle="tooltip"
+               data-placement="top" title="Anuluj"><img src="~/Images/no.png" width="23" /></a>
+        </th>
+    </tr>
+</form>
+

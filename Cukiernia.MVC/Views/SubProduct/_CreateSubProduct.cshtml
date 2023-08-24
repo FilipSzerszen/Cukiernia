@@ -1,0 +1,56 @@
+﻿@model Cukiernia.Aplication.Cukiernia.Commands.CreateSubProduct.CreateSubProductCommand
+
+
+<thead class="text-center">
+    <tr>
+        <th class="col-sm-4">
+            Składnik
+        </th>
+        <th class="col-sm-1">
+            Alergen
+        </th>
+        <th class="col-sm-2">
+            Cena jednostkowa
+        </th>
+        <th class="col-sm-2">
+            Opakowanie
+        </th>
+        <th class="col-sm-2">
+            Opcje
+        </th>
+    </tr>
+</thead>
+<tbody>
+    <form action="/SubProduct/CreateSubProduct" method="post">
+        <input class="form-check-input" asp-for="IsDeletable" checked hidden />
+    <tr>
+        <th>
+            <input asp-for="Name" class="form-control" type="text"/>
+        </th>
+        <th>
+            <input asp-for="IsAllergenic" class="form-check-input" />
+        </th>
+        <th>
+            <div class="input-group">
+                <input asp-for="Price" class="text-end form-control" type="text"/>
+                <span class="input-group-text">zł</span>
+            </div>
+        </th>
+        <th>
+            <div class="input-group">
+                <input asp-for="Package" class="form-control text-end w-50" type="text"/>
+                <select asp-for="MeasureId" class="dropdown-toggle form-select">
+                    <option selected value="1">g</option>                         @* TO DO - Ulepszyć listę - pobieranie wartości z bazy*@
+                    <option value="2">ml</option>
+                    <option value="3">szt</option>
+                </select>
+            </div>
+        </th>
+        <th>
+            <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="top" title="Dodaj">
+                <img src="~/Images/add.png" width="23">
+            </button>
+        </th>
+    </tr>
+    </form>
+</tbody>

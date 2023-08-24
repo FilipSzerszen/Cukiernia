@@ -1,0 +1,37 @@
+﻿@model Cukiernia.Aplication.Image.Commands.CreateImage.CreateImageCommand
+
+
+<h1>Dodaj zdjęcie</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form action="/Image/CreateImage" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label class="control-label" for="Url">Plik</label>
+                <input class="form-control" type="file" id="Url" name="formFile">
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" for="BakingId">BakingId</label>
+                <input class="form-control" type="text" id="BakingId" name="BakingId">
+                <span asp-validation-for="BakingId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="CreateImage" class="btn btn-primary">
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

@@ -1,0 +1,58 @@
+﻿@using Cukiernia.Aplication.Cukiernia.Commands.CreateBaking;
+
+@model CreateBakingCommand
+
+
+<h2>Dodaj nowy wypiek</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-9">
+        <form action="/Baking/Create" method="post" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label">Nazwa:</label>
+                <input asp-for="Name" class="form-control" id="Name" type="text" placeholder="Tu podaj nazwę ciasta...">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label">Opis:</label>
+                <textarea asp-for="Description" id="Description" class="form-control" type="text" style="height: 100px" name="Description" placeholder="Tu dodaj opis ciasta..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div>
+                <partial name="_emoji.cshtml" />
+            </div>
+            <div class="form-group mb-3">
+                <label for="Price" class="control-label">Ustalona cena:</label>
+                @if (Model == null)
+                {
+                    <input asp-for="Price" class="form-control" type="text" value="0,00">
+                }
+                else
+                {
+                    <input asp-for="Price" class="form-control" type="text">
+                }
+                <span asp-validation-for="Price" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Images" class="control-label">Zdjęcia:</label>
+                <input asp-for="Images" class="form-control" type="file" multiple>
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Utwórz" class="btn btn-primary">
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/emoji.js"></script>
+}
+
+

@@ -1,0 +1,45 @@
+﻿@model IList<Cukiernia.Aplication.Cukiernia.SubProductDto>
+@*@{
+    var encodedName = (ViewContext.RouteData.Values["encodedName"]);
+}*@
+
+
+<button class="btn btn-secondary mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#AddSubProduct" aria-expanded="false" aria-controls="AddSubProduct">
+    Dodaj składniki
+</button>
+
+<div class="collapse  mt-3" id="AddSubProduct">
+    <div class="card card-body">
+        <form asp-controller="Quantity" asp-action="CreateSubProductsList" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddSubProductModalLabel">Dodawanie składników wypieku</h5>
+            </div>
+            <div class="modal-body">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <input asp-for="@Model[i].Id" name="[@i].Id" hidden />
+                    <input asp-for="@Model[i].Name" name="[@i].Name" class="form-control" type="text" hidden />
+                    <input asp-for="@Model[i].IsAllergenic" name="[@i].IsAllergenic" hidden />
+                    <input asp-for="@Model[i].Price" name="[@i].Price" type="text" hidden />
+                    <input asp-for="@Model[i].Package" name="[@i].Package" type="text" hidden />
+                    <input asp-for="@Model[i].MeasureId" name="[@i].MeasureId" hidden />
+                    <input asp-for="@Model[i].IsDeletable" name="[@i].IsDeletable" hidden />
+                    @if (@Model[i].IsInBaking)
+                    {
+                        <input asp-for="@Model[i].IsInBaking" type="checkbox" id="[@i].IsInBaking" class="btn-check" name="[@i].IsInBaking" autocomplete="off" checked>
+                    }
+                    else
+                    {
+                        <input asp-for="@Model[i].IsInBaking" type="checkbox" id="[@i].IsInBaking" class="btn-check" name="[@i].IsInBaking" autocomplete="off">
+                    }
+                    <label asp-for="@Model[i].IsInBaking" for="[@i].IsInBaking" class="btn btn-outline-primary mb-2 me-1 skladniki">@Model[i].Name</label>
+                }
+            </div>
+            <div class="text-end">
+                <input type="submit" value="Dodaj składniki" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+
+

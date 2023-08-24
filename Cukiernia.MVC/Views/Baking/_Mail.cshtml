@@ -1,0 +1,46 @@
+﻿@model Cukiernia.MVC.Models.emailDto
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+@*        <form action="Index" method="post" enctype="multipart/form-data">*@
+            <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="fromAddress" class="control-label"></label>
+                <input asp-for="fromAddress" class="form-control" value="slodkagruszkamail@gmail.com" />
+                <span asp-validation-for="fromAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="toEmail" class="control-label"></label>
+                <input asp-for="toEmail" class="form-control" value="filipsz60@wp.pl"  />
+                <span asp-validation-for="toEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="subject" class="control-label"></label>
+                <input asp-for="subject" class="form-control" value="Subject" />
+                <span asp-validation-for="subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="body" class="control-label"></label>
+                <input asp-for="body" class="form-control" value="Email body" />
+                <span asp-validation-for="body" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

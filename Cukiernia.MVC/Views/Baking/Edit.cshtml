@@ -1,0 +1,169 @@
+﻿@model Cukiernia.Aplication.Cukiernia.Commands.EditBaking.EditBakingCommand
+
+@{
+    ViewData["Title"] = "Edycja ciasta";
+    var encodedName = (ViewContext.RouteData.Values["encodedName"]);
+    decimal endPrice = 0.0M;
+    decimal sum = 0.0M;
+}
+
+<h2>@Model.Name - edycja</h2>
+
+
+<div class="row col-md-9">
+    <hr />
+    <div>
+        @if (Model.Images.Any())
+        {
+            <div class="row g-0">
+                @foreach (var image in Model.Images)
+                {
+                    <div class="card m-1 border-black bg-black" style="width: 10rem;">
+                        <img class="card-img my-auto mx-auto rounded" src="~/Fotos/@image.Url.ToString()" alt="@Model.Name" />
+                        <a class="position-absolute bottom-0 end-0 me-1 mb-1" data-toggle="tooltip" data-placement="top"
+                           asp-controller="Image" asp-route-encodedName="@Model.EncodedName" asp-action="DeleteImage"
+                           asp-route-imageId="@image.Id" title="Usuń"><img src="~/Images/delete.png" width="25" /></a>
+                    </div>
+
+                }
+            </div>
+        }
+        else
+        {
+            <img class="img-fluid rounded" src="~/Images/default.jpg" alt="@Model.Name" />
+        }
+    </div>
+
+    <div class="mt-3">
+        <partial name="_SubProductMeasuresTable.cshtml" /><a id="CreateSubProductsListPartial"></a>
+    </div>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        @if (Model.ProductQuantities.Any())
+        {
+            <div class="align-middle">
+                <hr />
+
+                <dl class="row text-center">
+                    <dt class="col-sm-3">
+                        Produkt
+                    </dt>
+                    <dt class="col-sm-1">
+                        Alergeny
+                    </dt>
+                    <dt class="col-sm-2">
+                        W wypieku
+                    </dt>
+                    <dt class="col-sm-3">
+                        Cena produktu
+                    </dt>
+                    <dt class="col-sm-2">
+                        Cena końcowa
+                    </dt>
+                    <dt class="col-sm-1">
+                    </dt>
+
+                    @for (int i = 0; i < Model.ProductQuantities.Count; i++)
+                    {
+                        if (Model.ProductQuantities[i].SubProduct != null)
+                        {
+                            <input asp-for="@Model.ProductQuantities[i].Id" hidden />
+
+                            <dt class="col-sm-3 text-start">
+                                @Model.ProductQuantities[i].SubProduct.Name
+                            </dt>
+                            <dd class="col-sm-1">
+                                @if (Model.ProductQuantities[i].SubProduct.IsAllergenic)
+                                {
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled>
+                                }
+                                else
+                                {
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" unchecked disabled>
+                                }
+                            </dd>
+                            <dd class="col-sm-2">
+                                <div class="input-group mb-3">
+                                    <input asp-for="@Model.ProductQuantities[i].SubProductQuantity" type="text" class="form-control text-end" value="@Model.ProductQuantities[i].SubProductQuantity" />
+                                    <span class="input-group-text">@Model.ProductQuantities[i].SubProduct.Measure.Value</span>
+                                    <span asp-validation-for="@Model.ProductQuantities[i].SubProductQuantity" class="text-danger"></span>
+                                </div>
+                            </dd>
+                            <dd class="col-sm-3">
+                                @Model.ProductQuantities[i].SubProduct.Price zł / @Model.ProductQuantities[i].SubProduct.Package @Model.ProductQuantities[i].SubProduct.Measure.Value
+                            </dd>
+                            <dd class="col-sm-2">
+                                @{
+                                    if (Model.ProductQuantities[i].SubProductQuantity.HasValue)
+                                    {
+                                        endPrice = (decimal)Model.ProductQuantities[i].SubProductQuantity * (decimal)Model.ProductQuantities[i].SubProduct.Price / Model.ProductQuantities[i].SubProduct.Package;
+                                        sum += endPrice;
+                                    }
+                                }
+                                @(endPrice.ToString("0.00")) zł
+                            </dd>
+                            <dd class="col-sm-1">
+                                <a class="btn btn-outline-secondary" asp-controller="Quantity"
+                                   asp-action="DeleteProductQuantity" asp-route-encodedName="@Model.EncodedName" asp-route-id="@Model.ProductQuantities[i].Id"
+                                   title="Usuń"><img src="~/Images/delete.png" width="23" /></a>
+                            </dd>
+                        }
+
+                    }
+                </dl>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                    </dt>
+                    <dt class="col-sm-8 text-end">
+                        Koszt całkowity:
+                    </dt>
+                    <dt class="col-sm-2 text-center">
+                        @sum.ToString("0.00"+" zł")
+                    </dt>
+                </dl>
+            </div>
+        }
+        <br />
+        <div class="form-group mb-3">
+            <label asp-for="CreatedAt" class="control-label">Utworzono: @Model.CreatedAt.ToString("dd.MM.yyyy")</label>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Description" class="control-label">Opis:</label>
+            <textarea asp-for="Description" id="Description" class="form-control" style="height: 100px"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div>
+            <partial name="_emoji.cshtml" />
+        </div>
+        <input asp-for="Name" class="form-control" type="text" hidden>
+
+        <div class="form-group mb-3">
+            <label asp-for="Price" class="control-label">Cena:</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="Images" class="control-label">Dodaj zdjęcia:</label>
+            <input asp-for="Images" class="form-control" type="file" multiple>
+            <span asp-validation-for="Images" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Zapisz" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts{
+    @*    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }*@
+    <script src="~/js/emoji.js"></script>
+    <script>
+        $('#CreateSubProductsListPartial').load('@Url.Action("CreateSubProductsList","Quantity",new{encodedName = encodedName})');
+    </script>
+
+}

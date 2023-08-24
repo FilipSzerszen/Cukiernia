@@ -1,0 +1,45 @@
+﻿@model Cukiernia.MVC.Models.emailDto
+@*
+@{
+    var encodedName = (ViewContext.RouteData.Values["encodedName"]);
+}*@
+
+<button class="btn btn-secondary me-3" type="button" data-bs-toggle="collapse" data-bs-target="#Email" aria-expanded="false" aria-controls="Email">
+    Zapytaj o @Model.subject
+</button>
+
+
+
+<div class="accordion-collapse  collapse  mt-3" id="Email">
+    <form asp-controller="Mail" asp-action="Send" method="post">
+        <div class="modal-header">
+            <h5 class="modal-title" id="EmailModalLabel">Zapytanie o @Model.subject </h5>
+        </div>
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="body" class="control-label">Treść pytania:</label>
+                <textarea asp-for="body" class="form-control" type="text" style="height: 100px" name="body"></textarea>
+                <span asp-validation-for="body" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="toEmail" class="control-label">Email do odpowiedzi:</label>
+                <input asp-for="toEmail" class="form-control" id="Name" type="text">
+                <span asp-validation-for="toEmail" class="text-danger"></span>
+            </div>
+
+            <input asp-for="@Model.fromAddress" value="@Model.fromAddress" hidden />
+            <input asp-for="@Model.subject" value="Zapytanie o @Model.subject" hidden />
+        </div>
+        <div class="text-end">
+            <input type="submit" value="Zapytaj" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
